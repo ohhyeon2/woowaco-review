@@ -1,30 +1,34 @@
 package baseball;
 
 import camp.nextstep.edu.missionutils.Randoms;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RandomGenerator {
 
-    private final Set<Integer> randomNumbers;
+    private final List<Integer> randomNumbers;
 
     public RandomGenerator() {
         this.randomNumbers = randomNumber();
     }
 
-    private Set<Integer> randomNumber() {
-        Set<Integer> ranNums = new HashSet<>();
-        while (ranNums.size() != 3) {
-            ranNums.add(randomGenerator());
+    private List<Integer> randomNumber() {
+        List<Integer> numbers = new ArrayList<>();
+        while (numbers.size() != 3) {
+            numbers.add(randomGenerator(numbers));
         }
-        return ranNums;
+        return numbers;
     }
 
-    private int randomGenerator() {
-        return Randoms.pickNumberInRange(1, 9);
+    private int randomGenerator(List<Integer> numbers) {
+        int randomNumber = Randoms.pickNumberInRange(1, 9);
+        if (numbers.contains(randomNumber)) {
+            return randomGenerator(numbers);
+        }
+        return randomNumber;
     }
 
-    public Set<Integer> getNumbers() {
+    public List<Integer> getNumbers() {
         return randomNumbers;
     }
 }
