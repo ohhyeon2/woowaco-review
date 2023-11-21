@@ -13,15 +13,15 @@ public class RandomGenerator {
     }
 
     private List<Integer> randomNumber() {
-        List<Integer> numbers = new ArrayList<>();
+        final List<Integer> numbers = new ArrayList<>();
         while (numbers.size() != 3) {
             numbers.add(randomGenerator(numbers));
         }
         return numbers;
     }
 
-    private int randomGenerator(List<Integer> numbers) {
-        int randomNumber = Randoms.pickNumberInRange(1, 9);
+    private int randomGenerator(final List<Integer> numbers) {
+        final int randomNumber = Randoms.pickNumberInRange(1, 9);
         if (numbers.contains(randomNumber)) {
             return randomGenerator(numbers);
         }
