@@ -1,4 +1,4 @@
-package baseball;
+package baseball.view;
 
 import camp.nextstep.edu.missionutils.Console;
 import java.util.ArrayList;
@@ -8,13 +8,13 @@ import java.util.Set;
 
 public class InputView {
 
-    public List<Integer> input() {
+    public static List<Integer> input() {
         final String input = Console.readLine();
         validateInput(input, inputParsing(input));
         return inputParsing(input);
     }
 
-    private List<Integer> inputParsing(final String input) {
+    private static List<Integer> inputParsing(final String input) {
         List<Integer> nums = new ArrayList<>();
         for (String num : input.split("")) {
             nums.add(validateNumber(num));
@@ -22,7 +22,7 @@ public class InputView {
         return nums;
     }
 
-    private int validateNumber(final String num) {
+    private static int validateNumber(final String num) {
         try {
             return Integer.parseInt(num);
         } catch (NumberFormatException e) {
@@ -30,7 +30,7 @@ public class InputView {
         }
     }
 
-    private void validateInput(final String input, final List<Integer> nums) {
+    private static void validateInput(final String input, final List<Integer> nums) {
         if (input.isEmpty()) {
             throw new IllegalArgumentException("error : 세자리의 숫자를 입력해주세요.");
         }

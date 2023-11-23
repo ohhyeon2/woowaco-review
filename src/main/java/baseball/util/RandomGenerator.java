@@ -7,13 +7,7 @@ import java.util.List;
 
 public class RandomGenerator {
 
-    private final List<Integer> randomNumbers;
-
-    public RandomGenerator() {
-        this.randomNumbers = randomNumber();
-    }
-
-    private List<Integer> randomNumber() {
+    public List<Integer> createRandomNumbers() {
         final List<Integer> numbers = new ArrayList<>();
         while (numbers.size() != 3) {
             numbers.add(randomGenerator(numbers));
@@ -27,9 +21,5 @@ public class RandomGenerator {
             return randomGenerator(numbers);
         }
         return randomNumber;
-    }
-
-    public List<Integer> getNumbers() {
-        return randomNumbers;
     }
 }

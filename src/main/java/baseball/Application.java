@@ -1,68 +1,61 @@
 package baseball;
 
+import static baseball.view.InputView.input;
+import static baseball.view.OutputView.inputNumberMessage;
+import static baseball.view.OutputView.inputRetryOrQuitButtonMessage;
+import static baseball.view.OutputView.nothingCountMessage;
+import static baseball.view.OutputView.strikeAndBallCountMessage;
+
+import baseball.domain.BaseballBall;
+import baseball.domain.BaseballNothing;
+import baseball.domain.BaseballStrike;
+import baseball.util.RandomGenerator;
+import baseball.view.InputView;
+
+import camp.nextstep.edu.missionutils.Console;
 import java.util.List;
 
 public class Application {
     public static void main(String[] args) {
         try {
-            OutputView.inputNumber();
-            final InputView inputView = new InputView();
-            final RandomGenerator randomGenerator = new RandomGenerator();
-            System.out.println(randomGenerator.getNumbers());
-            final List<Integer> input= inputView.input();
-            System.out.println(referee(input, randomGenerator));
+            boolean isGame = true;
+            while (isGame) {
+                final RandomGenerator randomGenerator = new RandomGenerator();
+                final List<Integer> randomNumbers = randomGenerator.createRandomNumbers();
+                System.out.println(randomNumbers);
+                baseballReferee(randomNumbers);
+                isGame = isRetryGame();
+            }
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
 
-    public static boolean referee(List<Integer> input, RandomGenerator randomGenerator) {
-        int strikeCount = 0;
-        int ballCount = 0;
+    public static void baseballReferee(List<Integer> randomNumbers) {
+        while (true) {
+            inputNumberMessage();
 
-        threeStrike(input, randomGenerator);
-        if (!nothing(input, randomGenerator)) {
-            System.out.println("낫싱");
-            return false;
-        }
-        if (nothing(input, randomGenerator)) {
-            strikeCount = strike(input, randomGenerator);
-            ballCount = ball(input, randomGenerator);
-        }
-        System.out.println("볼" + ballCount + ", " + "스트라이크" + strikeCount);
-        return true;
-    }
-    public static boolean nothing(List<Integer> input, RandomGenerator randomGenerator) {
-        final boolean nothing = false;
-        for (Integer integer : input) {
-            if (randomGenerator.getNumbers().contains(integer)) {
-                return true;
+            final List<Integer> input = input();
+
+            final int strike = new BaseballStrike().baseballReferee(input, randomNumbers);
+            final int ball = new BaseballBall().baseballReferee(input, randomNumbers);
+            final int nothing = new BaseballNothing().baseballReferee(input, randomNumbers);
+
+            if (strike == 0 && ball == 0) {
+                nothingCountMessage(nothing);
+                continue;
+            }
+
+            strikeAndBallCountMessage(strike, ball);
+
+            if (strike == 3) {
+                break;
             }
         }
-        return nothing;
-    }
-    public static int strike(List<Integer> input, RandomGenerator randomGenerator) {
-        int strikeCount = 0;
-        for (int i = 0; i < randomGenerator.getNumbers().size(); i++) {
-            if (randomGenerator.getNumbers().get(i).equals(input.get(i))) {
-                strikeCount++;
-            }
-        }
-        return strikeCount;
     }
 
-    public static int ball(List<Integer> input, RandomGenerator randomGenerator) {
-        int ballCount = 0;
-        for (int i = 0; i < randomGenerator.getNumbers().size(); i++) {
-            if (randomGenerator.getNumbers().contains(input.get(i)) && !randomGenerator.getNumbers().get(i).equals(input.get(i)))
-                ballCount++;
-        }
-        return ballCount;
-    }
-
-    public static void threeStrike(List<Integer> input, RandomGenerator randomGenerator) {
-        if (randomGenerator.getNumbers().containsAll(input)) {
-            System.out.println("3스트라이크 게임 종료");
-        }
+    public static boolean isRetryGame() {
+        inputRetryOrQuitButtonMessage();
+        return Console.readLine().equals("1");
     }
 }
