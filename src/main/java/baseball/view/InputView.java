@@ -1,5 +1,7 @@
 package baseball.view;
 
+import static baseball.view.ViewConstant.INPUT_NUMBER_FORMAT_EXCEPTION;
+
 import camp.nextstep.edu.missionutils.Console;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,20 +28,20 @@ public class InputView {
         try {
             return Integer.parseInt(num);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException("error : 숫자 외에 다른 문자의 입력은 안된다.");
+            throw new NumberFormatException(INPUT_NUMBER_FORMAT_EXCEPTION);
         }
     }
 
     private static void validateInput(final String input, final List<Integer> nums) {
         if (input.isEmpty()) {
-            throw new IllegalArgumentException("error : 세자리의 숫자를 입력해주세요.");
+            throw new IllegalArgumentException(INPUT_NUMBER_FORMAT_EXCEPTION);
         }
         if (input.length() != 3) {
-            throw new IllegalArgumentException("error : 세자리의 숫자를 입력해주세요.");
+            throw new IllegalArgumentException(INPUT_NUMBER_FORMAT_EXCEPTION);
         }
         Set<Integer> duplicate = new HashSet<>(nums);
         if (duplicate.size() != input.length()) {
-            throw new IllegalArgumentException("error : 중복된 수는 입력할 수 없습니다.");
+            throw new IllegalArgumentException(INPUT_NUMBER_FORMAT_EXCEPTION);
         }
     }
 }
