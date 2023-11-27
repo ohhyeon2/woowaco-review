@@ -1,18 +1,30 @@
 package baseball.domain;
 
-import camp.nextstep.edu.missionutils.Console;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum BaseballGameRetry {
-    RETRY("1"),
-    QUIT("2");
+    RETRY("1", true),
+    QUIT("2", false);
 
     private final String button;
+    private final boolean restartOrQuit;
 
-    BaseballGameRetry(String button) {
+    BaseballGameRetry(String button, boolean restartOrQuit) {
         this.button = button;
+        this.restartOrQuit = restartOrQuit;
     }
 
-    public boolean isRetryGame(String input) {
-        return button.equals(input);
+    private static Map<String, Boolean> restartAndQuitOption() {
+        Map<String, Boolean> options = new HashMap<>();
+        for (BaseballGameRetry option : BaseballGameRetry.values()) {
+            options.put(option.button, option.restartOrQuit);
+        }
+        return options;
+    }
+
+    public static boolean restartAndQuit(String input) {
+        Map<String, Boolean> options = restartAndQuitOption();
+        return options.get(input);
     }
 }
