@@ -14,12 +14,17 @@ public enum BaseballGameRules {
         this.rules = rules;
         this.count = count;
     }
-
     BaseballGameRules(String rules) {
         this.rules = rules;
     }
 
+    public static void countInit() {
+        STRIKE.count = 0;
+        BALL.count = 0;
+    }
+
     public static void baseballCount(List<Integer> input, List<Integer> randomNumbers) {
+        BaseballGameRules.countInit();
         for (int i = 0; i < 3; i++) {
             if (randomNumbers.get(i).equals(input.get(i))) {
                 STRIKE.count++;
@@ -42,5 +47,9 @@ public enum BaseballGameRules {
             sb.append(STRIKE.count).append(STRIKE.rules);
         }
         return sb.toString();
+    }
+
+    public static boolean isThreeStrike() {
+        return STRIKE.count == 3;
     }
 }
