@@ -1,61 +1,38 @@
 package baseball;
 
+import static baseball.domain.BaseballGameRetry.restartAndQuit;
+import static baseball.domain.BaseballGameRules.baseballCount;
+import static baseball.domain.BaseballGameRules.getBaseballCount;
+import static baseball.domain.BaseballGameRules.isThreeStrike;
+
+import static baseball.util.RandomGenerator.createRandomNumbers;
+
 import static baseball.view.InputView.input;
+import static baseball.view.InputView.inputRetry;
+import static baseball.view.OutputView.baseballGameEndMessage;
 import static baseball.view.OutputView.inputNumberMessage;
-import static baseball.view.OutputView.inputRetryOrQuitButtonMessage;
-import static baseball.view.OutputView.nothingCountMessage;
 import static baseball.view.OutputView.strikeAndBallCountMessage;
 
-import baseball.domain.BaseballBall;
-import baseball.domain.BaseballNothing;
-import baseball.domain.BaseballStrike;
-import baseball.util.RandomGenerator;
-import baseball.view.InputView;
-
-import camp.nextstep.edu.missionutils.Console;
+import baseball.domain.BaseballGameRules;
 import java.util.List;
 
 public class Application {
     public static void main(String[] args) {
-        try {
-            boolean isGame = true;
-            while (isGame) {
-                final RandomGenerator randomGenerator = new RandomGenerator();
-                final List<Integer> randomNumbers = randomGenerator.createRandomNumbers();
-                System.out.println(randomNumbers);
-                baseballReferee(randomNumbers);
-                isGame = isRetryGame();
-            }
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(e.getMessage());
+        boolean gameOn = true;
+        while (gameOn) {
+            gameLoop(createRandomNumbers());
+            baseballGameEndMessage();
+            gameOn = restartAndQuit(inputRetry());
         }
     }
 
-    public static void baseballReferee(List<Integer> randomNumbers) {
-        while (true) {
+    public static void gameLoop(List<Integer> randomNumbers) {
+        BaseballGameRules.countInit();
+        while (!isThreeStrike()) {
+            System.out.println(randomNumbers);
             inputNumberMessage();
-
-            final List<Integer> input = input();
-
-            final int strike = new BaseballStrike().baseballReferee(input, randomNumbers);
-            final int ball = new BaseballBall().baseballReferee(input, randomNumbers);
-            final int nothing = new BaseballNothing().baseballReferee(input, randomNumbers);
-
-            if (strike == 0 && ball == 0) {
-                nothingCountMessage(nothing);
-                continue;
-            }
-
-            strikeAndBallCountMessage(strike, ball);
-
-            if (strike == 3) {
-                break;
-            }
+            baseballCount(input(), randomNumbers);
+            strikeAndBallCountMessage(getBaseballCount());
         }
-    }
-
-    public static boolean isRetryGame() {
-        inputRetryOrQuitButtonMessage();
-        return Console.readLine().equals("1");
     }
 }

@@ -16,6 +16,10 @@ public class InputView {
         return inputParsing(input);
     }
 
+    public static String inputRetry() {
+        return Console.readLine();
+    }
+
     private static List<Integer> inputParsing(final String input) {
         List<Integer> nums = new ArrayList<>();
         for (String num : input.split("")) {
