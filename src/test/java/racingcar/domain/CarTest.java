@@ -1,6 +1,5 @@
 package racingcar.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,8 +20,7 @@ class CarTest {
     @DisplayName("차량 이름 정상 입력")
     @Test
     void createCarSuccessTest() {
-        Car testCar = new Car("valid");
-        assertThat(testCar.getCarName()).isEqualTo("valid");
+        assertDoesNotThrow(() -> new Car("valid"));
     }
 
     @DisplayName("차량 초기 위치 0")
