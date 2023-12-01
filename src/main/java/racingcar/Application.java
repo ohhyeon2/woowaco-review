@@ -38,6 +38,5 @@ class Game {
 
         RaceWinner raceWinner = new RaceWinner(race);
         printRaceWinnerMessage(raceWinner.getWinners());
-
     }
 }
