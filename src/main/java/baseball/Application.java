@@ -1,9 +1,7 @@
 package baseball;
 
-import static baseball.domain.BaseballGameRetry.restartAndQuit;
-import static baseball.domain.BaseballGameRules.baseballCount;
-import static baseball.domain.BaseballGameRules.getBaseballCount;
-import static baseball.domain.BaseballGameRules.isThreeStrike;
+import static baseball.domain.Retry.restartAndQuit;
+import static baseball.domain.Rules.isThreeStrike;
 
 import static baseball.util.RandomGenerator.createRandomNumbers;
 
@@ -13,7 +11,7 @@ import static baseball.view.OutputView.baseballGameEndMessage;
 import static baseball.view.OutputView.inputNumberMessage;
 import static baseball.view.OutputView.strikeAndBallCountMessage;
 
-import baseball.domain.BaseballGameRules;
+import baseball.domain.Rules;
 import java.util.List;
 
 public class Application {
@@ -27,12 +25,11 @@ public class Application {
     }
 
     public static void gameLoop(List<Integer> randomNumbers) {
-        BaseballGameRules.countInit();
         while (!isThreeStrike()) {
-            System.out.println(randomNumbers);
             inputNumberMessage();
-            baseballCount(input(), randomNumbers);
-            strikeAndBallCountMessage(getBaseballCount());
+            final List<Integer> input = input();
+            final Rules rules = new Rules(input, randomNumbers);
+            strikeAndBallCountMessage(rules.getStrike(), rules.getBall());
         }
     }
 }

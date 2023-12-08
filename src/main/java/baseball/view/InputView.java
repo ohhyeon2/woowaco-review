@@ -1,8 +1,8 @@
 package baseball.view;
 
 import static baseball.view.ViewConstant.INPUT_NUMBER_FORMAT_EXCEPTION;
+import static camp.nextstep.edu.missionutils.Console.readLine;
 
-import camp.nextstep.edu.missionutils.Console;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,39 +11,51 @@ import java.util.Set;
 public class InputView {
 
     public static List<Integer> input() {
-        final String input = Console.readLine();
-        validateInput(input, inputParsing(input));
-        return inputParsing(input);
-    }
-
-    public static String inputRetry() {
-        return Console.readLine();
-    }
-
-    private static List<Integer> inputParsing(final String input) {
-        List<Integer> nums = new ArrayList<>();
+        final String input = readLine();
+        final List<Integer> nums = new ArrayList<>();
+        validateInput(input);
         for (String num : input.split("")) {
-            nums.add(validateNumber(num));
+            validateNumberRange(num);
+            nums.add(validateInputFormat(num));
         }
         return nums;
     }
 
-    private static int validateNumber(final String num) {
+    public static String inputRetry() {
+        return readLine();
+    }
+
+    private static void validateInput(final String input) {
+        validateInputLength(input);
+        validateDuplicate(input);
+    }
+
+    private static int validateInputFormat(final String input) {
         try {
-            return Integer.parseInt(num);
+            return Integer.parseInt(input);
         } catch (NumberFormatException e) {
             throw new NumberFormatException(INPUT_NUMBER_FORMAT_EXCEPTION);
         }
     }
 
-    private static void validateInput(final String input, final List<Integer> nums) {
+    private static void validateInputLength(final String input) {
         if (input.isEmpty()) {
             throw new IllegalArgumentException(INPUT_NUMBER_FORMAT_EXCEPTION);
         }
         if (input.length() != 3) {
             throw new IllegalArgumentException(INPUT_NUMBER_FORMAT_EXCEPTION);
         }
-        Set<Integer> duplicate = new HashSet<>(nums);
+    }
+
+    private static void validateNumberRange(final String input) {
+        if (Integer.parseInt(input) < 0 || Integer.parseInt(input) > 9) {
+            throw new IllegalArgumentException("숫자의 범위는 1, 9까지 입니다.");
+        }
+
+    }
+
+    private static void validateDuplicate(final String input) {
+        Set<String> duplicate = new HashSet<>(List.of(input));
         if (duplicate.size() != input.length()) {
             throw new IllegalArgumentException(INPUT_NUMBER_FORMAT_EXCEPTION);
         }

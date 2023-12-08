@@ -3,21 +3,21 @@ package baseball.domain;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum BaseballGameRetry {
+public enum Retry {
     RETRY("1", true),
     QUIT("2", false);
 
     private final String button;
     private final boolean restartOrQuit;
 
-    BaseballGameRetry(String button, boolean restartOrQuit) {
+    Retry(String button, boolean restartOrQuit) {
         this.button = button;
         this.restartOrQuit = restartOrQuit;
     }
 
     private static Map<String, Boolean> restartAndQuitOption() {
         Map<String, Boolean> options = new HashMap<>();
-        for (BaseballGameRetry option : BaseballGameRetry.values()) {
+        for (Retry option : Retry.values()) {
             options.put(option.button, option.restartOrQuit);
         }
         return options;

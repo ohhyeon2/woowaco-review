@@ -1,13 +1,25 @@
 package baseball.view;
 
+import java.util.StringJoiner;
+
 public class OutputView {
 
     public static void inputNumberMessage() {
         System.out.print("숫자를 입력해주세요 : ");
     }
 
-    public static void strikeAndBallCountMessage(String baseballCount) {
-        System.out.println(baseballCount);
+    public static void strikeAndBallCountMessage(int strike, int ball) {
+        StringJoiner joiner = new StringJoiner(" ");
+        if (strike == 0 && ball == 0) {
+            System.out.println("낫싱");
+        }
+        if (ball != 0) {
+            joiner.add(ball + "볼");
+        }
+        if (strike != 0) {
+            joiner.add(strike + "스트라이크");
+        }
+        System.out.println(joiner);
     }
 
     public static void baseballGameEndMessage() {
