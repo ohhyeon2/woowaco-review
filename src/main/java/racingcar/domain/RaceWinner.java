@@ -1,25 +1,20 @@
 package racingcar.domain;
 
+import java.util.List;
+
 public class RaceWinner {
 
-    private final String winners;
+    private final List<String> winners;
 
-    public RaceWinner(Race race) {
+    public RaceWinner(final Race race) {
         this.winners = winners(race);
     }
 
-    private String winners(Race race) {
-        StringBuilder sb = new StringBuilder();
-        for (String winner : race.winner()) {
-            sb.append(winner).append(",").append(" ");
-        }
-        if (sb.length() > 1) {
-            sb.setLength(sb.length() -2);
-        }
-        return sb.toString();
+    private List<String> winners(final Race race) {
+        return race.winner();
     }
 
-    public String getWinners() {
+    public List<String> getWinners() {
         return winners;
     }
 }

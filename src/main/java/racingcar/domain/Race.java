@@ -1,6 +1,6 @@
 package racingcar.domain;
 
-import static racingcar.domain.RandomGenerator.randomNumber;
+import static racingcar.view.OutputView.printRaceResultMessage;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
@@ -8,33 +8,36 @@ import java.util.List;
 
 public class Race {
 
-    private List<Car> cars;
-    private int rounds;
+    private final List<Car> cars;
+    private final int rounds;
 
-    public Race(List<Car> cars, int rounds) {
+    public Race(final List<Car> cars, final int rounds) {
         validateRound(rounds);
         this.cars = cars;
         this.rounds = rounds;
     }
 
     public void startRace() {
-        for (int i = 0; i < rounds; i++) {
-            for (Car car : cars) {
-                if (position()) {
-                    car.movePosition();
-                }
-                System.out.println(car.getCarName() + ": " + "-".repeat(car.getCarPosition()));
+        for (int round = 0; round < rounds; round++) {
+            movePosition();
+            printRaceResultMessage(cars);
+        }
+    }
+
+    private void movePosition() {
+        for (Car car : cars) {
+            if (position()) {
+                car.movePosition();
             }
-            System.out.println();
         }
     }
 
     private boolean position() {
-        return randomNumber() > 3;
+        return Randoms.pickNumberInRange(0, 9) > 3;
     }
 
     public List<String> winner() {
-        List<String > winners = new ArrayList<>();
+        final List<String > winners = new ArrayList<>();
         for (Car car : cars) {
             if (car.getCarPosition() == maxPosition()) {
                 winners.add(car.getCarName());
@@ -47,18 +50,18 @@ public class Race {
         return cars.stream().mapToInt(Car::getCarPosition).max().orElse(0);
     }
 
-    private void validateRound(int rounds) {
+    private void validateRound(final int rounds) {
         validateMaxRound(rounds);
         validateMinRound(rounds);
     }
 
-    private void validateMinRound(int rounds) {
+    private void validateMinRound(final int rounds) {
         if (rounds < 1) {
             throw new IllegalArgumentException("라운드는 최소 1회 이상을 입력해야 한다.");
         }
     }
 
-    private void validateMaxRound(int rounds) {
+    private void validateMaxRound(final int rounds) {
         if (rounds > 10) {
             throw new IllegalArgumentException("라운드는 10회를 넘길 수 없다.");
         }
